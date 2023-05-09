@@ -47,6 +47,7 @@
 *  2022-09-28  | Stuart.Malcolm  | Ported code to TFL_Standard_Repo 
 *  2022-10-03  | Stuart.Malcolm  | Moved into study /share directory
 *  2022-10-20  | Stuart.Malcolm  | support ADAM/TFL combined projects
+*  2023-05-09  | Tom.Ratford     | Support new project structure
 * ----------------------------------------------------------------------------
 *  YYYYMMDD  |  username        | ..description of change..         
 *****************************************************************************/
@@ -56,12 +57,12 @@
 * global constants - USER CONFIGURABLE. Change these here if needed;
  
 * Location of Domino Datasets folders that are defined in this project;
-* Likely to change depending whether project is DFS or Git hosted;
+* Dependent on whether project is DFS or Git hosted;
 %global __localdata_path;
-* USE THIS FOR DFS PROJECTS ;
-%let __localdata_path = /domino/datasets/local;
-* USE THIS FOR GIT PROJECTS;
-* %*let __localdata_path = /mnt/data;
+* Location of mounted shared Domino Datasets;
+%global __sharedata_path;
+* Location of imported code repositories;
+%global __imported_git_path;
 
 * globals read in from env vars; 
 %global __WORKING_DIR  ; * path to root of working directory ;
@@ -105,6 +106,24 @@
 %end;
  
 * ==================================================================;
+* work out if the project is git or domino based
+* ==================================================================;
+* !!ALERT!! DOMINO_IS_GIT_BASED is an undocumented environment variable;
+%let __is_git_project = %sysget(DOMINO_IS_GIT_BASED);
+%if %upcase(&__is_git_project) eq %str(TRUE) %then %do;
+  * local & imported dataset location;
+  %let __localdata_path = /mnt/data;
+  %let __sharedata_path = /mnt/imported/data;
+  * imported code location;
+  %let __imported_git_path = /mnt/imported/code;
+%end; %else %do;
+  %let __localdata_path = /domino/datasets/local;
+  %let __sharedata_path = /domino/datasets;
+  * Imported code repository location;
+  %let __imported_git_path = /repos;
+%end;
+
+* ==================================================================;
 * define library locations - these are dependent on the project type;
 * ==================================================================;
  
@@ -112,42 +131,24 @@
 * ------------------------------------------------------------------;
 %if %sysfunc(find(%upcase(&__PROJECT_TYPE.),SDTM)) ge 1 %then %do;
   * Local read/write access to SDTM and QC folders ;
-  libname SDTM   "&__localdata_path./SDTM";
-  libname SDTMQC "&__localdata_path./SDTMQC";
-  libname SDTMQC "&__localdata_path./RAW";
+  libname SDTMUNBD   "&__localdata_path./SDTMUNBLIND";
+  libname SDTMBLND "&__localdata_path./SDTMBLIND";
+  * Imported SDTM projects; 
+  libname RAW "&__sharedata_path./RAW" access=readonly;
+  libname UNBLIND "&__sharedata_path./UNBLIND" access=readonly;
+  libname BLIND "&__sharedata_path./BLIND" access=readonly;
+  * Metadata;
+  libname METADATA "&__localdata_path./METADATA";
 %end;
- 
-* TFL ;
-* ------------------------------------------------------------------;
-* this must come before ADAM code block so that combines ADAM+TFL ;
-* projects hasve the ADAM librry defined last (i.e. local not imported snapshot);
-%if %sysfunc(find(%upcase(&__PROJECT_TYPE.),TFL)) ge 1 %then %do;
-  * imported read-only access to ADaM folder;
-  * libname ADAM "/mnt/imported/data/ADAM" access=readonly;
-  * local read/write for TFL datasets ;
-  libname TFL   "&__localdata_path./TFL";
-  libname TFLQC "&__localdata_path./TFLQC";
-%end;
- 
-* ADAM ;
-* ------------------------------------------------------------------;
-%if %sysfunc(find(%upcase(&__PROJECT_TYPE.),ADAM)) ge 1 %then %do;
-  * imported read-only SDTM data, using the data cutoff date.. ;
-  * ..to identify the correct snapshot to use ;
-  libname SDTM "/domino/datasets/snapshots/SDTM/SDTM_&__DCUTDTC." access=readonly;
-*  libname SDTM "/mnt/imported/data/snapshots/SDTM/SDTM_&__DCUTDTC." access=readonly;
-  * local read/write acces to ADaM and QC folders;
-  libname ADAM   "&__localdata_path./ADAM";
-  libname ADAMQC "&__localdata_path./ADAMQC";
-%end;
- 
- 
-* RunAll ;
+
+* Reporting Effort (RE) project ;
 * ------------------------------------------------------------------;
 %if %sysfunc(find(%upcase(&__PROJECT_TYPE.),RUNALL)) ge 1 %then %do;
   * imported read-only SDTM data, using the data cutoff date.. ;
-  * ..to identify the correct snapshot to use ;
-  libname SDTM "/mnt/imported/data/snapshots/SDTM/SDTM_&__DCUTDTC." access=readonly;
+  * .. and sdtm variable to identify the correct snapshot to use ;
+  %let __SDTM_DATASET = %sysget(SDTM_DATASET);
+  %if &__SDTM_DATASET. eq %str() %then %put %str(ER)ROR: Environment Variable SDTM_DATASET not set;
+  libname SDTM "/mnt/imported/data/snapshots/&__SDTM_DATASET./&__DCUTDTC." access=readonly;
   * local read/write acces to ADaM and QC folders;
   libname ADAM   "&__localdata_path./ADAM";
   libname ADAMQC "&__localdata_path./ADAMQC";
@@ -164,9 +165,8 @@ options
   MAUTOLOCDISPLAY 
   sasautos=(
     "&__WORKING_DIR./share/macros"
-    ,"/mnt/share/macros"
-    ,"/mnt/ross_sharp_domino/ADaM_Standard_Macro_Library/share/macros"
-    ,"/mnt/ross_sharp_domino/TFL_Standard_Macro_Library/share/macros"
+    ,"&__imported_git_path./SDTM_Standard_Code"
+    ,"&__imported_git_path./RE_Standard_Code"
     ,SASAUTOS) ;
  
 * ==================================================================;
