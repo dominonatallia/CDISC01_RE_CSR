@@ -13,6 +13,7 @@ The global `domino.sas` autoexec progam is also included in the repository to ap
 ```
 repo
 │   domino.sas
+|   init_datasets.py
 ├───prod
 │   ├───adam
 │   └───tfl
@@ -23,6 +24,10 @@ repo
 └───share
     └───macros
 ```
+
+# Setup
+
+Create a new project, and then run `init_datasets.py` to create the appropriate analysis domino datasets (ADAM, TFL, ADAMQC and TFLQC). As well as import SDTM datasets from an existing project following the same naming convention (`XXXXX_SDTM` for `XXXXX_RE_YYYYY`).
 
 # Naming convention
 
