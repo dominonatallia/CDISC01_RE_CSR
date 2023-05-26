@@ -16,7 +16,8 @@ REQUIRED = {
     "ADAM": "ADAM is created using SDTM data for production",
     "ADAMQC": "ADAMQC is created using SDTM data for qc",
     "TFL": "TFL is created using ADAM for production tfls",
-    "TFLQC": "TFLQC is created using ADAM for qc tfls"
+    "TFLQC": "TFLQC is created using ADAM for qc tfls",
+    "METADATA": "ADaM and TFL metadata used by project and available downstream"
 }
 
 # Existing Datasets
