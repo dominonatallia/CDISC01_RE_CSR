@@ -27,7 +27,13 @@ repo
 
 # Setup
 
-Create a new project, and then run `init_datasets.py` to create the appropriate analysis domino datasets (ADAM, TFL, ADAMQC and TFLQC). As well as import SDTM datasets from an existing project following the same naming convention (`XXXXX_SDTM` for `XXXXX_RE_YYYYY`).
+1. Create a new project, named `CDISC01_RE_YOURNAME`.
+1. Run `dataset_init.py` as a job to create the appropriate analysis domino datasets (ADAM, TFL, ADAMQC and TFLQC). As well as import SDTM datasets from an existing project following the same naming convention (`CDISC01_SDTM` for `CDISC01_RE_XXXXX`).
+1. Add the external volume `pvc-rev4-nfs` to your project.
+1. Import the `CDISC01_SDTM` within artifacts to get the DCUTDTC environment variable.
+1. Run `import_metadata.sas` as a job (on the SAS environment!). 
+1. Run `snakemake.sh` as a job (on the 'w/ Snakemake' environment) to kick off the pipeline. 
+1. Within the project start the app to see the visual dependency graph.
 
 # Naming convention
 
