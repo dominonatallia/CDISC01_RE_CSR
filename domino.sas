@@ -48,6 +48,8 @@
 *  2022-10-03  | Stuart.Malcolm  | Moved into study /share directory
 *  2022-10-20  | Stuart.Malcolm  | support ADAM/TFL combined projects
 *  2023-05-09  | Tom.Ratford     | Support new project structure
+*  2023-05-09  | Tom.Ratford     | Output log in batch
+*  2023-05-18  | Megan.Harries   | Include metadata libname for RE Interim
 * ----------------------------------------------------------------------------
 *  YYYYMMDD  |  username        | ..description of change..         
 *****************************************************************************/
@@ -89,8 +91,6 @@
 %let __DCUTDTC      = %sysget(DCUTDTC);
 * runtime check that e.g. DCUTDTC is not missing;
 %if &__DCUTDTC. eq %str() %then %put %str(ER)ROR: Envoronment Variable DCUTDTC not set;
-* set  directory  where outputs (TFL) are written to;
-%let __results_path=&__WORKING_DIR./results;
  
 * ==================================================================;
 * extract the protocol and project type from the project name;
@@ -116,11 +116,15 @@
   %let __sharedata_path = /mnt/imported/data;
   * imported code location;
   %let __imported_git_path = /mnt/imported/code;
+  * set  directory  where outputs (TFL) are written to;
+  %let __results_path=/mnt/artifacts/results;
 %end; %else %do;
   %let __localdata_path = /domino/datasets/local;
   %let __sharedata_path = /domino/datasets;
   * Imported code repository location;
   %let __imported_git_path = /repos;
+  * set  directory  where outputs (TFL) are written to;
+  %let __results_path=&__WORKING_DIR./results;
 %end;
 
 * ==================================================================;
@@ -143,7 +147,7 @@
 
 * Reporting Effort (RE) project ;
 * ------------------------------------------------------------------;
-%if %sysfunc(find(%upcase(&__PROJECT_TYPE.),RUNALL)) ge 1 %then %do;
+%if %sysfunc(find(%upcase(&__PROJECT_TYPE.),RE)) ge 1 %then %do;
   * imported read-only SDTM data, using the data cutoff date.. ;
   * .. and sdtm variable to identify the correct snapshot to use ;
   %let __SDTM_DATASET = %sysget(SDTM_DATASET);
@@ -155,6 +159,8 @@
   * local read/write for TFL datasets ;
   libname TFL   "&__localdata_path./TFL";
   libname TFLQC "&__localdata_path./TFLQC";
+  * Metadata;
+  libname METADATA "&__localdata_path./METADATA";
 %end;
  
 * ==================================================================;
@@ -222,7 +228,7 @@ options
 * ==================================================================;
 %if &__runmode eq %str(BATCH) %then %do;
   * Redirect SAS LOG files when in batch mode;
-  *PROC PRINTTO LOG="&__WORKING_DIR./logs/&__prog_name..log" NEW;
+  PROC PRINTTO LOG="&__results_path./&__prog_name..log" NEW;
 %end;
  
 %mend __setup;
