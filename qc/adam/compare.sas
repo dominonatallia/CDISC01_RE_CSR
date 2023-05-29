@@ -1205,7 +1205,7 @@ proc sql noprint;
 	from ___LIBALLCOMP (where = (compstatus = 'Clean'));
 quit;
 
-proc json out = "/mnt/artifacts/results/dominostats.json" pretty;
+proc json out = "/mnt/artifacts/dominostats.json" pretty;
 	write values "Number of Datasets" &all_ds;
     write values "Clean Datasets" &ds_clean;
     write values "Datasets with Issues" &ds_issues;
