@@ -172,7 +172,9 @@ options
   sasautos=(
     "&__WORKING_DIR./share/macros"
     ,"&__imported_git_path./SDTM_Standard_Code"
+    ,"&__imported_git_path./SDTM_Standard_Code/macros"
     ,"&__imported_git_path./RE_Standard_Code"
+    ,"&__imported_git_path./RE_Standard_Code/macros"
     ,SASAUTOS) ;
  
 * ==================================================================;
