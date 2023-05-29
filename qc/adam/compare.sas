@@ -1205,7 +1205,7 @@ proc sql noprint;
 	from ___LIBALLCOMP (where = (compstatus = 'Clean'));
 quit;
 
-proc json out = "/mnt/results/dominostats.json" pretty;
+proc json out = "/mnt/artifacts/results/dominostats.json" pretty;
 	write values "Number of Datasets" &all_ds;
     write values "Clean Datasets" &ds_clean;
     write values "Datasets with Issues" &ds_issues;
@@ -1213,7 +1213,7 @@ proc json out = "/mnt/results/dominostats.json" pretty;
 run;
 
 /* Output results dataset */
-libname compare '/domino/datasets/local/COMPARE';
+libname compare "/mnt/data/&__PROJECT_NAME.";
 data compare.summary;
 	set ___LIBALLCOMP;
 run;
