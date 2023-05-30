@@ -50,7 +50,6 @@ def submit_api_call(method, endpoint, data=None):
 # Mount imported datasets
 
 REQUIRED_MOUNTED = {
-    "SDTMUNBLIND",
     "SDTMBLIND",
     "METADATA"
 }
