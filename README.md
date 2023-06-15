@@ -1,6 +1,9 @@
 # Template Reporting Effort repository
 
-This repo contains the folder structure to template a reporting effort making ADaM and TFL code for the Domino clinical trial demo
+This repo and corresponding Domino Project contains the folder structure to template a reporting effort making ADaM and TFL code for the Domino clinical trial demo.
+
+This repo project is copied by Clinical Programming team to instantiate a new study specfic reporting effort GitHub repo and Domino Project.
+
 
 # Directory structure
 
