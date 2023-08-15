@@ -24,11 +24,11 @@ repo
 │   │       compare.sas
 │   └───tfl
 ├───utilities
-│   init_datasets.py
-│   import_metadata.sas
+│       init_datasets.py
+│       import_metadata.sas
 ├───pipelines
-│   snakemake.sh
-│   Snakefile
+│       snakemake.sh
+│       Snakefile
 └───share
     └───macros
 ```
