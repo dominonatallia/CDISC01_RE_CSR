@@ -30,15 +30,14 @@ repo
 
 # Setup
 
-1. Create a new project, named `CDISC01_RE_YOURNAME`.
-1. Run `dataset_init.py` as a job to create the appropriate analysis domino datasets (ADAM, TFL, ADAMQC and TFLQC). As well as import SDTM datasets from an existing project following the same naming convention (`CDISC01_SDTM` for `CDISC01_RE_XXXXX`).
+1. Create a new project, named `CDISC01_RE_YOURNAME`, from copying this project. This will create a new project and a new study specfic GitHub repo.
+1. Run `utilities/dataset_init.py` as a job to create the appropriate analysis domino datasets (ADAM, TFL, ADAMQC and TFLQC). As well as import SDTM datasets from an existing project following the same naming convention (`CDISC01_SDTM` for `CDISC01_RE_XXXXX`).
 1. Add the external data volume (EDV) `metadata-repository` to your project.
-
      a. Ask your Domino contact on how to set up this example EDV within your Domino deployment. 
 1. Import the `CDISC01_SDTM` project within artifacts to get the DCUTDTC environment variable.
 2. Add [`SCE_STANDARD_LIB`](https://github.com/dominodatalab/SCE_STANDARD_LIB) as a secondary imported Git repo to your project.
-1. Run `import_metadata.sas` as a job (on the SAS environment!) to move and transform the metadata Excel file stored in the `metadata-repository` EDV to sas7bdat files in your local METADATA project dataset.
-1. Run `snakemake.sh` as a job (on the 'w/ Snakemake' environment) to kick off the pipeline. 
+1. Run `utilities/import_metadata.sas` as a job (on the SAS environment!) to move and transform the metadata Excel file stored in the `metadata-repository` EDV to sas7bdat files in your local METADATA project dataset.
+1. Run `pipelines/snakemake.sh` as a job (on the 'w/ Snakemake' environment) to kick off a pipeline that runs all PROD and QC programs for both ADaM and TFLs as seperate, reproducible Domino Jobs.
 1. Within the project start the app to see the visual dependency graph.
 
 # Naming convention
