@@ -33,6 +33,7 @@ repo
 1. Create a new project, named `CDISC01_RE_YOURNAME`, from copying this project. This will create a new project and a new study specfic GitHub repo.
 1. Run `utilities/dataset_init.py` as a job to create the appropriate analysis domino datasets (ADAM, TFL, ADAMQC and TFLQC). As well as import SDTM datasets from an existing project following the same naming convention (`CDISC01_SDTM` for `CDISC01_RE_XXXXX`).
 1. Add the external data volume (EDV) `metadata-repository` to your project.
+
      a. Ask your Domino contact on how to set up this example EDV within your Domino deployment. 
 1. Import the `CDISC01_SDTM` project within artifacts to get the DCUTDTC environment variable.
 2. Add [`SCE_STANDARD_LIB`](https://github.com/dominodatalab/SCE_STANDARD_LIB) as a secondary imported Git repo to your project.
