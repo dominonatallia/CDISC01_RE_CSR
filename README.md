@@ -16,7 +16,6 @@ The global `domino.sas` autoexec progam is also included in the repository to ap
 ```
 repo
 │   domino.sas
-|   init_datasets.py
 ├───prod
 │   ├───adam
 │   └───tfl
@@ -24,6 +23,12 @@ repo
 │   ├───adam
 │   │       compare.sas
 │   └───tfl
+├───utilities
+│   init_datasets.py
+│   import_metadata.sas
+├───pipelines
+│   snakemake.sh
+│   Snakefile
 └───share
     └───macros
 ```
