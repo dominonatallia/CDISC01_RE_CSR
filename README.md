@@ -32,9 +32,10 @@ repo
 
 1. Create a new project, named `CDISC01_RE_YOURNAME`.
 1. Run `dataset_init.py` as a job to create the appropriate analysis domino datasets (ADAM, TFL, ADAMQC and TFLQC). As well as import SDTM datasets from an existing project following the same naming convention (`CDISC01_SDTM` for `CDISC01_RE_XXXXX`).
-1. Add the external volume `pvc-rev4-nfs` to your project.
-1. Import the `CDISC01_SDTM` within artifacts to get the DCUTDTC environment variable.
-1. Run `import_metadata.sas` as a job (on the SAS environment!). 
+1. Add the external data volume (EDV) `metadata-repository` to your project.
+    a. Ask your Domino contact on how to set up this example EDV within your Domino deployment. 
+1. Import the `CDISC01_SDTM` project within artifacts to get the DCUTDTC environment variable.
+1. Run `import_metadata.sas` as a job (on the SAS environment!) to move and transform the metadata Excel file stored in the `metadata-repository` EDV to sas7bdat files in your local METADATA project dataset.
 1. Run `snakemake.sh` as a job (on the 'w/ Snakemake' environment) to kick off the pipeline. 
 1. Within the project start the app to see the visual dependency graph.
 
@@ -45,6 +46,8 @@ The programs follow a typical clinical trial naming convention, where the ADaM p
 # QC programming and reporting
 
 The QC programming is all in SAS, and there is a `compare.sas` program which uses SAS PROC COMPARE to create a summary report of all differences between the prod and qc datasets. This program also generates the `dominostats.json` files which Domino uses to display a dashboard in the jobs screen.
+
+`compare.sas` references a read-only SAS macro stored in the SCE_STANDARD_LIB repo so ensure this is imported as a secondary repo in order to run it.
 
 # Support
 
