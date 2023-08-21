@@ -43,7 +43,7 @@ repo
 1. Import the `CDISC01_SDTM` project within artifacts to get the DCUTDTC environment variable.
 2. Add [`SCE_STANDARD_LIB`](https://github.com/dominodatalab/SCE_STANDARD_LIB) as a secondary imported Git repo to your project.
 1. Run `utilities/import_metadata.sas` as a job (on the SAS environment!) to move and transform the metadata Excel file stored in the `metadata-repository` EDV to sas7bdat files in your local METADATA project dataset.
-1. Run `pipelines/snakemake.sh` as a job (on the 'w/ Snakemake' environment) to kick off a pipeline that runs all PROD and QC programs for both ADaM and TFLs as seperate, reproducible Domino Jobs.
+1. Run each of your prod ADaM and TFL programs in the Jobs view to produce your outputs.
 1. Within the project start the app to see the visual dependency graph.
 
 # Naming convention
