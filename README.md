@@ -21,7 +21,7 @@ repo
 │   └───tfl
 ├───qc
 │   ├───adam
-│   │       compare.sas
+│   │       compare_adam.sas
 │   └───tfl
 ├───utilities
 │       init_datasets.py
@@ -29,6 +29,8 @@ repo
 ├───pipelines
 │       snakemake.sh
 │       Snakefile
+│       multijob.py
+│       jobs_example.cfg
 └───share
     └───macros
 ```
